@@ -1,10 +1,12 @@
-KERNEL_SRC ?= /lib/modules/$(shell uname -r)/build
+obj-$(CONFIG_INPUT_TOUCHSCREEN_GOODIX_GTX8_V1430_MMI) := goodix_v1430_mmi.o
+goodix_v1430_mmi-objs = goodix_ts_i2c.o goodix_ts_core.o goodix_cfg_bin.o
 
-all:
-	$(MAKE) -C $(KERNEL_SRC) M=$(shell pwd) modules $(KBUILD_OPTIONS)
+ifneq ($(filter m y,$(CONFIG_INPUT_TOUCHSCREEN_MMI)),)
+	goodix_v1430_mmi-objs += goodix_ts_mmi.o
+endif
 
-modules_install:
-	$(MAKE) INSTALL_MOD_STRIP=1 -C $(KERNEL_SRC) M=$(shell pwd) modules_install
+obj-$(CONFIG_INPUT_TOUCHSCREEN_GOODIX_GTX8_V1430_MMI) += goodix_v1430_update_mmi.o
+goodix_v1430_update_mmi-objs = goodix_gtx8_update.o
 
-clean:
-	$(MAKE) -C $(KERNEL_SRC) M=$(PWD) clean
+obj-$(CONFIG_INPUT_TOUCHSCREEN_GOODIX_GTX8_V1430_MMI) += goodix_v1430_ts_tools_mmi.o
+goodix_v1430_ts_tools_mmi-objs = goodix_ts_tools.o
