@@ -1,14 +1,10 @@
-all: modules
+obj-$(CONFIG_INPUT_TOUCHSCREEN_MMI) := touchscreen_mmi.o
 
-modules:
-	$(MAKE) -C $(KERNEL_SRC) M=$(M) modules $(KBUILD_OPTIONS)
+ifneq ($(filter m y, $(CONFIG_TOUCHCLASS_MMI_GESTURE_POISON_EVENT)),)
+	subdir-ccflags-y += -DTS_MMI_TOUCH_GESTURE_POISON_EVENT
+endif
 
-modules_install:
-	$(MAKE) INSTALL_MOD_STRIP=1 -C $(KERNEL_SRC) M=$(M) modules_install
-
-%:
-	$(MAKE) -C $(KERNEL_SRC) M=$(M) $@ $(KBUILD_OPTIONS)
-
-KBUILD_EXTRA_SYMBOLS += $(M)/../../../sensors/Module.symvers
-KBUILD_EXTRA_SYMBOLS += $(M)/../../../mmi_relay/Module.symvers
-KBUILD_EXTRA_SYMBOLS += $(OUT_DIR)/../../vendor/qcom/opensource/display-drivers/msm/Module.symvers
+touchscreen_mmi-objs := touchscreen_mmi_class.o
+touchscreen_mmi-objs += touchscreen_mmi_panel.o
+touchscreen_mmi-objs += touchscreen_mmi_notif.o
+touchscreen_mmi-objs += touchscreen_mmi_gesture.o
