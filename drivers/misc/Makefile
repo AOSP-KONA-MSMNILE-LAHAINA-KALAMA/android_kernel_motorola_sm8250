@@ -80,3 +80,4 @@ obj-y                           += qrc/
 obj-$(CONFIG_KINECTICS_XR_NORDIC) += kxrctrl/
 obj-y				+= awinic/aw8697/
 obj-y				+= sx933x/
+obj-y				+= mmi_sys_temp/
