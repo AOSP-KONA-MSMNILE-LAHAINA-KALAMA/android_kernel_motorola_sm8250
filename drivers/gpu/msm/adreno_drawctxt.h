@@ -65,6 +65,7 @@ struct adreno_context {
 	struct dentry *debug_root;
 	unsigned int queued_timestamp;
 	struct adreno_ringbuffer *rb;
+	unsigned int submitted_timestamp;
 
 	struct list_head active_node;
 	unsigned long active_time;
