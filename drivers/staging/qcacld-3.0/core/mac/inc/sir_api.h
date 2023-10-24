@@ -2557,6 +2557,7 @@ typedef struct sSirScanOffloadEvent {
  * @dfsSet: is dfs supported or not
  * @half_rate: is the channel operating at 10MHz
  * @quarter_rate: is the channel operating at 5MHz
+ * @nan_disabled: is NAN disabled on @freq
  */
 typedef struct sSirUpdateChanParam {
 	uint32_t freq;
@@ -2564,6 +2565,7 @@ typedef struct sSirUpdateChanParam {
 	bool dfsSet;
 	bool half_rate;
 	bool quarter_rate;
+	bool nan_disabled;
 } tSirUpdateChanParam, *tpSirUpdateChanParam;
 
 typedef struct sSirUpdateChan {
@@ -3023,6 +3025,7 @@ struct roam_offload_synch_ind {
 #ifdef WLAN_FEATURE_ROAM_OFFLOAD
 struct handoff_failure_ind {
 	uint8_t vdev_id;
+	struct qdf_mac_addr bssid;
 };
 
 struct roam_offload_synch_fail {
@@ -5401,6 +5404,7 @@ struct ppet_hdr {
 #define HE_CH_WIDTH_COMBINE(b0, b1, b2, b3, b4, b5, b6)             \
 	((uint8_t)(b0) | ((b1) << 1) | ((b2) << 2) |  ((b3) << 3) | \
 	((b4) << 4) | ((b5) << 5) | ((b6) << 6))
+#define HE_CH_WIDTH_CLR_BIT(ch_wd, bit)      (((ch_wd) >> (bit)) & ~1)
 
 /*
  * MCS values are interpreted as in IEEE 11ax-D1.4 spec onwards
