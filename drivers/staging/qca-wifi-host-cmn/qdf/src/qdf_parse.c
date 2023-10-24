@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 The Linux Foundation. All rights reserved.
+ * Copyright (c) 2018-2020 The Linux Foundation. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -33,10 +33,7 @@ QDF_STATUS qdf_ini_parse(const char *ini_path, void *context,
 	QDF_STATUS status;
 	char *fbuf;
 	char *cursor;
-	char *device_ptr, *radio_ptr = NULL;
-	const char *cmd_line = NULL;
-	struct device_node *chosen_node = NULL;
-	int len = 0;
+	int ini_read_count = 0;
 
 	status = qdf_file_read(ini_path, &fbuf);
 	if (QDF_IS_STATUS_ERROR(status)) {
@@ -147,6 +144,8 @@ QDF_STATUS qdf_ini_parse(const char *ini_path, void *context,
 			status = item_cb(context, key, value);
 			if (QDF_IS_STATUS_ERROR(status))
 				goto free_fbuf;
+			else
+				ini_read_count++;
 		} else if (key[0] == '[') {
 			qdf_size_t len = qdf_str_len(key);
 
@@ -167,7 +166,11 @@ QDF_STATUS qdf_ini_parse(const char *ini_path, void *context,
 			cursor++;
 	}
 
-	status = QDF_STATUS_SUCCESS;
+	qdf_debug("INI values read: %d", ini_read_count);
+	if (ini_read_count != 0)
+		status = QDF_STATUS_SUCCESS;
+	else
+		status = QDF_STATUS_E_FAILURE;
 
 free_fbuf:
 	qdf_file_buf_free(fbuf);
