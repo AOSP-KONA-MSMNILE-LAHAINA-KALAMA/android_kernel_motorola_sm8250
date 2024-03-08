@@ -21,7 +21,7 @@ enum panel_event {
 	PANEL_EVENT_PRE_DISPLAY_ON,
 	PANEL_EVENT_DISPLAY_OFF,
 	PANEL_EVENT_DISPLAY_ON,
-	PANEL_EVENT_PANEL_PREPARE,
+	PANEL_EVENT_DISPLAY_ON_PREPARE,
 };
 
 #ifdef CONFIG_PANEL_NOTIFICATIONS
@@ -61,7 +61,6 @@ static inline int check_touch_state(int *state, int panel_idx);
 {
 	return -ENOSYS;
 }
-
 
 #endif
 #endif
